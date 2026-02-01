@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ledgero</title>
+    <link rel="icon" type="image/png" href="LEDGERO.png">
+    <link rel="stylesheet" href="Ledgero.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Ledgero</h1>
+            <p>Create professional invoices instantly</p>
+        </header>
+        
+        <div class="form-section">
+            <div class="section-header">
+                <h2>Company Information</h2>
+            </div>
+
+            <div class="logo-upload">
+                <label for="logo">Company Logo</label>
+                <input type="file" id="logo" accept="image/*">
+                <button id="removeLogo" class="btn-secondary small">Remove Logo</button>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" placeholder="Acme Corporation">
+                </div>
+
+                <div class="form-group">
+                    <label for="companyEmail">Email</label>
+                    <input type="email" id="companyEmail" placeholder="info@company.com">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="companyAddress">Address</label>
+                <textarea id="companyAddress" placeholder="123 Business St, Suite 100&#10;City, State 12345"></textarea>
+            </div>
+
+            <div class="section-header">
+                <h2>Invoice Details</h2>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="invoiceNumber">Invoice Number</label>
+                    <input type="text" id="invoiceNumber" placeholder="INV-001">
+                </div>
+
+                <div class="form-group">
+                    <label for="invoiceDate">Date</label>
+                    <input type="date" id="invoiceDate">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dueDate">Due Date</label>
+                    <input type="date" id="dueDate">
+                </div>
+
+                <div class="form-group">
+                    <label for="currency">Currency</label>
+                    <select id="currency">
+                        <option value="$">$ USD</option>
+                        <option value="€">€ EUR</option>
+                        <option value="£">£ GBP</option>
+                        <option value="¥">¥ JPY</option>
+                        <option value="₹">₹ INR</option>
+                        <option value="R">R ZAR</option>
+                        <option value="A$">A$ AUD</option>
+                        <option value="C$">C$ CAD</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2>Client Information</h2>
+            </div>
+
+            <div class="form-group">
+                <label for="clientName">Client Name</label>
+                <input type="text" id="clientName" placeholder="Client Company Ltd">
+            </div>
+
+            <div class="form-group">
+                <label for="clientEmail">Client Email</label>
+                <input type="email" id="clientEmail" placeholder="client@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="clientAddress">Client Address</label>
+                <textarea id="clientAddress" placeholder="456 Client Ave&#10;City, State 67890"></textarea>
+            </div>
+
+            <div class="section-header">
+                <h2>Invoice Items</h2>
+            </div>
+
+            <div id="itemsContainer">
+                <div class="item-row">
+                    <input type="text" class="item-description" placeholder="Product or service description">
+                    <input type="number" class="item-quantity" placeholder="Qty" min="1" value="1">
+                    <input type="number" class="item-price" placeholder="Price" min="0" step="0.01">
+                    <button class="btn-remove" disabled>×</button>
+                </div>
+            </div>
+            <button id="addItem" class="btn-secondary">+ Add Item</button>
+
+            <div class="form-group">
+                <label for="notes">Notes (Optional)</label>
+                <textarea id="notes" placeholder="Payment terms, thank you message, etc."></textarea>
+            </div>
+
+            <div class="total-section">
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span><span id="currencySymbol">$</span><span id="subtotalAmount">0.00</span></span>
+                </div>
+                <div class="total-row">
+                    <span>Tax (<input type="number" id="taxRate" min="0" max="100" step="0.1" value="0" style="width: 50px">%):</span>
+                    <span><span id="currencySymbol2">$</span><span id="taxAmount">0.00</span></span>
+                </div>
+                <div class="total-row total">
+                    <span>Total:</span>
+                    <span><span id="currencySymbol3">$</span><span id="totalAmount">0.00</span></span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="clearForm" class="btn-secondary">Clear All</button>
+                <button id="downloadPDF" class="btn-primary">Download PDF</button>
+            </div>
+        </div>
+
+        <div class="preview-section" id="invoicePreview">
+            <div class="invoice-header">
+                <div class="company-info">
+                    <div id="logoPreview"></div>
+                    <div>
+                        <h2 id="previewCompanyName">Your Company</h2>
+                        <p id="previewCompanyEmail"></p>
+                        <p id="previewCompanyAddress"></p>
+                    </div>
+                </div>
+                <div class="invoice-title">
+                    <h1>INVOICE</h1>
+                </div>
+            </div>
+
+            <div class="invoice-details">
+                <div class="detail-group">
+                    <p><strong>Invoice #:</strong> <span id="previewInvoiceNumber">-</span></p>
+                    <p><strong>Date:</strong> <span id="previewInvoiceDate">-</span></p>
+                    <p><strong>Due Date:</strong> <span id="previewDueDate">-</span></p>
+                </div>
+                <div class="detail-group">
+                    <p><strong>Bill To:</strong></p>
+                    <p id="previewClientName"></p>
+                    <p id="previewClientEmail"></p>
+                    <p id="previewClientAddress"></p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="previewItems"></tbody>
+            </table>
+
+            <div class="invoice-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span><span id="previewCurrencySymbol1">$</span><span id="previewSubtotal">0.00</span></span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (<span id="previewTaxRate">0</span>%):</span>
+                    <span><span id="previewCurrencySymbol2">$</span><span id="previewTax">0.00</span></span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span><span id="previewCurrencySymbol3">$</span><span id="previewTotal">0.00</span></span>
+                </div>
+            </div>
+
+            <div id="previewNotes" class="invoice-notes"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="Ledgero.js"></script>
+</body>
+</html>
